@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { clearTokens } from '../api/api';
 import '../styles/header.css';
+import logo from '../assets/logo.png';
 
 const Header = ({ user, showProfile = true }) => {
     const navigate = useNavigate();
@@ -59,7 +60,7 @@ const Header = ({ user, showProfile = true }) => {
 
     const start = (
         <img
-            src="/src/assets/logo.png"
+            src={logo}
             alt="Logo"
             className="logo-img mr-4"
             onClick={() => navigate(isAdmin ? '/dashboard' : '/daily-activities')}
