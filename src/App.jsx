@@ -14,7 +14,7 @@ import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
 import DailyActivity from './pages/DailyActivity';
-import Profile from './pages/Profile';
+import Profile from './pages/Profile.jsx';
 import Login from './pages/Login';
 import AdminUsers from './pages/AdminUsers';
 

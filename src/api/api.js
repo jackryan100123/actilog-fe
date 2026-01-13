@@ -1,6 +1,8 @@
 import Swal from 'sweetalert2';
 
-const API_BASE_URL = 'http://localhost:8080';
+// const API_BASE_URL = 'http://localhost:8080';
+const hostname = window.location.hostname; 
+export const API_BASE_URL = `http://${hostname}:8080`;
 
 export function getAccessToken() {
   return localStorage.getItem('accessToken');
