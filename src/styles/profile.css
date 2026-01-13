@@ -1,0 +1,78 @@
+/* PROFILE PAGE LAYOUT */
+.profile-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* CARD ENHANCEMENTS */
+.profile-card {
+    border-radius: 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    height: 100%; /* Ensures both cards match height if content allows */
+}
+
+.profile-card .p-card-title {
+    font-size: 1.25rem;
+    color: #1e293b;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* READ-ONLY FIELDS (SLATE STYLE) */
+.read-only-field .p-inputtext:disabled {
+    background-color: #f8fafc !important; /* Slate 50 */
+    color: #64748b !important;           /* Slate 500 */
+    border: 1px solid #e2e8f0 !important; /* Slate 200 */
+    opacity: 1; /* Removes browser default fade */
+    cursor: not-allowed;
+}
+
+/* ROLE BADGE */
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #f0fdfa; /* Teal 50 */
+    color: #0d9488;           /* Teal 600 */
+    border: 1px solid #ccfbf1; /* Teal 100 */
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* PASSWORD SECTION (ACTIVE TEAL) */
+.security-section label {
+    color: #334155;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Ensures PrimeReact Password component takes full width */
+.security-section .p-password,
+.security-section .p-password input {
+    width: 100%;
+}
+
+/* TEAL BUTTON OVERRIDE */
+.profile-save-btn {
+    background-color: #0d9488 !important;
+    border: none !important;
+    padding: 0.85rem !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.profile-save-btn:hover {
+    background-color: #0f766e !important; /* Teal 700 */
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+    transform: translateY(-1px);
+}
+
+/* RESPONSIVE TWEAKS */
+@media (max-width: 991px) {
+    .profile-page-container {
+        padding: 1rem;
+    }
+}

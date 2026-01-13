@@ -1,0 +1,101 @@
+/* HEADER WRAPPER */
+.header-wrapper {
+    background-color: #f8fafc; /* Slate 50 */
+    border-bottom: 1px solid #e2e8f0; /* Slate 200 */
+    padding: 0.75rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-menubar {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* LOGO */
+.logo-img {
+    height: 42px;
+    width: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.03);
+}
+
+/* USER AVATAR */
+.avatar {
+    width: 38px !important;
+    height: 38px !important;
+    background-color: #0d9488 !important; /* Teal 600 */
+    color: #ffffff !important;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.avatar:hover {
+    background-color: #0f766e !important;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+/* PROFILE DIALOG */
+.profile-form {
+    padding-top: 1rem;
+}
+
+.profile-form label {
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* Styling the Menu Items */
+.header-menubar .p-menuitem-link {
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Hover Effect - Uses your soft teal vibe */
+.header-menubar .p-menuitem-link:hover {
+    background: rgba(13, 148, 136, 0.08) !important;
+}
+
+.header-menubar .p-menuitem-link:hover .p-menuitem-text,
+.header-menubar .p-menuitem-link:hover .p-menuitem-icon {
+    color: #0d9488 !important; /* Your Teal color */
+}
+
+/* Active State styling */
+.header-menubar .p-menuitem.p-highlight > .p-menuitem-content .p-menuitem-link {
+    color: #0d9488 !important;
+    font-weight: 600;
+}
+
+/* Profile Menu (TieredMenu) styling */
+.p-tieredmenu {
+    border-radius: 12px !important;
+    padding: 0.5rem !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.logout-item .p-menuitem-link .p-menuitem-text,
+.logout-item .p-menuitem-link .p-menuitem-icon {
+    color: #ef4444 !important; /* Red for logout */
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 960px) {
+    .header-menubar .p-menubar-button {
+        color: #0d9488;
+    }
+}

@@ -1,0 +1,93 @@
+.p-fluid .formgrid .field {
+    margin-bottom: 1.5rem;
+}
+
+.p-dialog .p-fluid label {
+    font-weight: 500;
+    color: #475569;
+}
+
+.p-dialog .p-inputtext,
+.p-dialog .p-password input,
+.p-dialog .p-dropdown {
+    width: 100%;
+}
+
+.dialog-button-group {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 1.5rem;
+}
+
+.dialog-button-group .p-button {
+    width: auto !important;
+    min-width: 100px;
+}
+
+.p-button-teal {
+    background-color: #0d9488 !important;
+    border-color: #0d9488 !important;
+    color: #ffffff !important;
+}
+
+.p-button-teal:hover {
+    background-color: #0f766e !important;
+    border-color: #0f766e !important;
+}
+
+.dialog-footer-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1.5rem;
+}
+
+.dialog-footer-actions .p-button {
+    width: auto !important;
+    min-width: 110px;
+}
+
+.p-button.p-button-danger.p-button-text:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
+}
+
+.p-button.p-button-warning.p-button-text:hover {
+    background: rgba(245, 158, 11, 0.1) !important;
+}
+
+.surface-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+}
+
+.text-900 {
+    color: #0f172a;
+}
+
+.text-600 {
+    color: #475569;
+}
+
+.p-datatable .p-datatable-header {
+    background: #f8fafc;
+    border: none;
+    padding: 1.5rem 0;
+}
+
+.p-column-title {
+    font-weight: 700;
+}
+
+@media screen and (max-width: 960px) {
+    .p-datatable.p-datatable-stack .p-datatable-tbody > tr > td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 1rem !important;
+    }
+}

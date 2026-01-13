@@ -1,0 +1,145 @@
+/* Import Inter Font - The standard for modern SaaS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Color Palette - Tailwind Teal / Slate mix */
+  --primary-teal: #0d9488;
+  --primary-hover: #0f766e;
+  --primary-soft: rgba(13, 148, 136, 0.1);
+  --bg-global: #f8fafc;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  
+  /* Component Spacing/Border Radius */
+  --radius-xl: 24px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Base styles (Small Laptop/Standard Screens) */
+body, html, #root {
+  height: 100dvh; /* Use dynamic viewport height for the best fit */
+  font-size: 16px; /* Standard base size */
+}
+
+/* For Large Desktop Monitors (1200px and up) */
+@media only screen and (min-width: 1200px) {
+  body, html, #root {
+    font-size: 18px; /* Slightly larger text for big screens */
+  }
+  
+  .container {
+    max-width: 1440px; /* Prevents content from stretching too wide */
+    margin: 0 auto;    /* Centers the layout on big monitors */
+  }
+}
+
+/* For Extra Large 4K Monitors (1920px and up) */
+@media only screen and (min-width: 1920px) {
+  body, html, #root {
+    font-size: 20px; /* Scale up even more for readability */
+  }
+}
+
+
+/* Scrollbar Styling (Teal themed) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-teal);
+}
+
+/* ============================================================
+   PRIMEREACT GLOBAL OVERRIDES 
+   (Ensures all PrimeReact components follow the Teal Theme)
+   ============================================================ */
+
+/* Primary Button Styling */
+.p-button {
+  background: var(--primary-teal) !important;
+  border: 1px solid var(--primary-teal) !important;
+  border-radius: var(--radius-lg) !important;
+  transition: all 0.2s ease !important;
+  font-weight: 600 !important;
+}
+
+.p-button:hover {
+  background: var(--primary-hover) !important;
+  transform: translateY(-1px);
+}
+
+/* Input Fields Global Override */
+.p-inputtext, .p-password-input {
+  border-radius: var(--radius-lg) !important;
+  border: 1.5px solid var(--border-color) !important;
+  padding: 0.75rem 1rem !important;
+  transition: all 0.2s !important;
+}
+
+.p-inputtext:enabled:focus, .p-password-input:enabled:focus {
+  border-color: var(--primary-teal) !important;
+  box-shadow: 0 0 0 3px var(--primary-soft) !important;
+}
+
+/* Checkbox Color */
+.p-checkbox .p-checkbox-box.p-highlight {
+  background: var(--primary-teal) !important;
+  border-color: var(--primary-teal) !important;
+}
+
+/* GLOBAL SWEETALERT FIXES */
+
+/* 1. Ensure it is always on top of PrimeReact Modals */
+.swal2-container {
+    z-index: 10000 !important;
+}
+
+/* 2. Global Teal Styling for Swal Buttons */
+.swal2-styled.swal2-confirm {
+    background-color: #0d9488 !important; /* Your Teal color */
+    box-shadow: none !important;
+    border-radius: 8px !important;
+    padding: 10px 24px !important;
+    font-weight: 600 !important;
+}
+
+.swal2-styled.swal2-cancel {
+    border-radius: 8px !important;
+}
+
+/* 3. Global Popup Styling (Optional) */
+.swal2-popup {
+    border-radius: 16px !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+/* Layout Helpers */
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
+.bg-slate-50 {
+    background-color: #f8fafc;
+}

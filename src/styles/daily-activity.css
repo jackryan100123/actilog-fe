@@ -1,0 +1,83 @@
+/* KEEPING YOUR ORIGINAL STYLES */
+.daily-page { background-color: #f8fafc; min-height: 100vh; padding: 2rem; }
+.daily-container { max-width: 1400px; margin: 0 auto; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.title-area h1 { font-size: 1.75rem; color: #0f172a; font-weight: 800; margin: 0; }
+
+.status-tag { font-weight: 700 !important; padding: 0.3rem 0.8rem !important; border-radius: 6px !important; font-size: 0.75rem !important; }
+.status-completed { background-color: rgba(13, 148, 136, 0.12) !important; color: #0d9488 !important; border: 1px solid #0d9488 !important; }
+.status-inprogress { background-color: rgba(59, 130, 246, 0.12) !important; color: #3b82f6 !important; border: 1px solid #3b82f6 !important; }
+.status-pending { background-color: rgba(245, 158, 11, 0.12) !important; color: #f59e0b !important; border: 1px solid #f59e0b !important; }
+
+.modern-action-icon { font-size: 1.15rem; cursor: pointer; transition: all 0.2s; padding: 8px; border-radius: 50%; }
+.edit-icon { color: #0ea5e9; } .edit-icon:hover { background-color: #e0f2fe; transform: translateY(-2px); }
+.delete-icon { color: #f43f5e; } .delete-icon:hover { background-color: #fff1f2; transform: translateY(-2px); }
+
+
+
+/* ADDING THE NEW DIALOG ENHANCEMENTS */
+.modern-dialog .p-dialog-header {
+    background: #ffffff;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 1.5rem;
+}
+
+.modern-dialog .p-dialog-content {
+    padding: 1.5rem !important;
+}
+
+/* Enhancing input labels */
+.form-grid label {
+    color: #475569;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+/* Ensuring MultiSelect chips match your teal theme */
+.custom-multiselect .p-multiselect-token {
+    background: #0d9488 !important;
+    color: #ffffff !important;
+    font-size: 0.8rem;
+    padding: 2px 8px;
+}
+
+/* Global focus states to match teal */
+.p-inputtext:focus, .p-dropdown:focus, .p-multiselect:focus {
+    border-color: #0d9488 !important;
+    box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.2) !important;
+}
+
+/* Table row interaction */
+.custom-teal-table .p-datatable-tbody > tr:hover {
+    background-color: #f0fdfa !important; /* light teal hover */
+}
+
+/* KEEPING YOUR BUTTONS */
+.teal-btn {
+    background: #0d9488 !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    padding: 0.6rem 1.2rem !important;
+}
+.teal-btn:hover { background: #0f766e !important; }
+.text-muted { color: #64748b; font-size: 0.9rem; }
+
+/* Simple Grey Chips */
+.tool-chip-simple {
+    background-color: #f1f5f9; /* Slate 100 */
+    color: #475569;           /* Slate 600 */
+    border: 1px solid #e2e8f0; /* Slate 200 */
+    padding: 2px 8px;
+    border-radius: 4px;        /* Subtle rounded corners instead of pills */
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Optional: Subtle row highlight to make chips pop */
+.custom-teal-table .p-datatable-tbody > tr:hover .tool-chip-simple {
+    background-color: #e2e8f0; /* Darken slightly on row hover */
+    border-color: #cbd5e1;
+}

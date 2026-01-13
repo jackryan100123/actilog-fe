@@ -1,0 +1,64 @@
+/* --- Calendar Week Highlight --- */
+.selected-week {
+    background-color: #f0fdfa !important; /* Soft Teal */
+    color: #0d9488 !important;
+    border-radius: 0 !important;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.week-start {
+    border-top-left-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+}
+
+.week-end {
+    border-top-right-radius: 50% !important;
+    border-bottom-right-radius: 50% !important;
+}
+
+/* Ensure the actual selected circles stay dark teal */
+.p-datepicker table td > span.p-highlight {
+    background: #0d9488 !important;
+    color: #ffffff !important;
+}
+
+/* --- Teal Theme Overrides --- */
+.p-button-teal {
+    background-color: #0d9488 !important;
+    border-color: #0d9488 !important;
+}
+
+.p-button-teal:hover {
+    background-color: #0f766e !important;
+}
+
+.teal-dropdown.p-dropdown:hover {
+    border-color: #0d9488 !important;
+}
+
+.p-datatable-teal .p-datatable-thead > tr > th {
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+canvas {
+    animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
