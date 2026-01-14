@@ -41,7 +41,9 @@ const emptyForm = {
 
 export default function DailyActivity() {
   const navigate = useNavigate();
-  
+
+  const today = new Date();
+
   // --- States ---
   const [activities, setActivities] = useState([]);
   const [tools, setTools] = useState([]);
@@ -136,15 +138,15 @@ export default function DailyActivity() {
     const isPrivileged = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
     return (
       <div className="flex gap-4 align-items-center justify-content-center">
-        <i 
-          className="pi pi-pencil modern-action-icon edit-icon" 
-          onClick={() => openEdit(row)} 
+        <i
+          className="pi pi-pencil modern-action-icon edit-icon"
+          onClick={() => openEdit(row)}
           title="Edit"
         />
         {isPrivileged && (
-          <i 
-            className="pi pi-trash modern-action-icon delete-icon" 
-            onClick={() => removeActivity(row.id)} 
+          <i
+            className="pi pi-trash modern-action-icon delete-icon"
+            onClick={() => removeActivity(row.id)}
             title="Delete"
           />
         )}
@@ -170,7 +172,7 @@ export default function DailyActivity() {
     const payload = {
       ...form,
       activityDate: form.activityDate.toISOString().split('T')[0],
-      miscellaneousWork: typeof form.miscellaneousWork === 'string' 
+      miscellaneousWork: typeof form.miscellaneousWork === 'string'
         ? form.miscellaneousWork.split(',').map(v => v.trim()).filter(Boolean)
         : form.miscellaneousWork,
       toolsUsed: [...new Set(form.toolsUsed)]
@@ -179,7 +181,7 @@ export default function DailyActivity() {
     try {
       if (editingId) await updateActivity(editingId, payload);
       else await createActivity(payload);
-      
+
       Swal.fire({ icon: 'success', title: 'Saved', timer: 1500, showConfirmButton: false });
       setVisible(false);
       loadData();
@@ -190,9 +192,9 @@ export default function DailyActivity() {
 
   const removeActivity = async (id) => {
     const res = await Swal.fire({ title: 'Delete Activity?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#0d9488' });
-    if (res.isConfirmed) { 
-      await deleteActivity(id); 
-      loadData(); 
+    if (res.isConfirmed) {
+      await deleteActivity(id);
+      loadData();
     }
   };
 
@@ -265,149 +267,151 @@ export default function DailyActivity() {
             <Column field="typeOfInformation" header="Type of Info" filter sortable />
             <Column field="status" header="Status" body={statusBodyTemplate} filter filterElement={statusFilterTemplate} sortable />
 
-<Column 
-    header="Tools Used" 
-    style={{ minWidth: '180px' }}
-    body={(row) => (
-        <div className="flex flex-wrap gap-1">
-            {row.toolsUsed?.map((tool, index) => (
-                <span key={index} className="tool-chip-simple">
-                    {tool}
-                </span>
-            ))}
-        </div>
-    )} 
-/>
+            <Column
+              header="Tools Used"
+              style={{ minWidth: '180px' }}
+              body={(row) => (
+                <div className="flex flex-wrap gap-1">
+                  {row.toolsUsed?.map((tool, index) => (
+                    <span key={index} className="tool-chip-simple">
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              )}
+            />
 
             <Column body={actionTemplate} header="Actions" />
           </DataTable>
         </div>
       </div>
 
-<Dialog 
-    header={editingId ? 'Edit Activity Details' : 'Register New Activity'} 
-    visible={visible} 
-    onHide={() => setVisible(false)} 
-    className="modern-dialog" 
-    modal 
-    draggable={false}
-    style={{ width: '50vw' }}
-    breakpoints={{ '960px': '75vw', '641px': '90vw' }}
->
-    <div className="grid form-grid pt-2">
-        {/* Row 1: Date and Status */}
-        <div className="field col-12 md:col-6">
+      <Dialog
+        header={editingId ? 'Edit Activity Details' : 'Register New Activity'}
+        visible={visible}
+        onHide={() => setVisible(false)}
+        className="modern-dialog"
+        modal
+        draggable={false}
+        style={{ width: '50vw' }}
+        breakpoints={{ '960px': '75vw', '641px': '90vw' }}
+      >
+        <div className="grid form-grid pt-2">
+          {/* Row 1: Date and Status */}
+          <div className="field col-12 md:col-6">
             <label className="font-bold block mb-2">Activity Date</label>
-            <Calendar 
-                value={form.activityDate} 
-                onChange={e => setForm({ ...form, activityDate: e.value })} 
-                showIcon 
-                className="w-full shadow-none" 
-                placeholder="Select date"
+            <Calendar
+              value={form.activityDate}
+              onChange={e => setForm({ ...form, activityDate: e.value })}
+              showIcon
+              className="w-full shadow-none"
+              placeholder="Select date"
+              maxDate={today} 
+              readOnlyInput
             />
-        </div>
-        <div className="field col-12 md:col-6">
+          </div>
+          <div className="field col-12 md:col-6">
             <label className="font-bold block mb-2">Current Status</label>
-            <Dropdown 
-                value={form.status} 
-                options={STATUS_OPTIONS} 
-                onChange={e => setForm({ ...form, status: e.value })} 
-                className="w-full" 
-                placeholder="Select status"
+            <Dropdown
+              value={form.status}
+              options={STATUS_OPTIONS}
+              onChange={e => setForm({ ...form, status: e.value })}
+              className="w-full"
+              placeholder="Select status"
             />
-        </div>
+          </div>
 
-        {/* Row 2: Case Details and Info Type */}
-        <div className="field col-12 md:col-6">
+          {/* Row 2: Case Details and Info Type */}
+          <div className="field col-12 md:col-6">
             <label className="font-bold block mb-2">Detail of Case</label>
-            <InputText 
-                value={form.detailOfCase} 
-                onChange={e => setForm({ ...form, detailOfCase: e.target.value })} 
-                className="w-full" 
-                placeholder="Enter case reference"
+            <InputText
+              value={form.detailOfCase}
+              onChange={e => setForm({ ...form, detailOfCase: e.target.value })}
+              className="w-full"
+              placeholder="Enter case reference"
             />
-        </div>
-        <div className="field col-12 md:col-6">
+          </div>
+          <div className="field col-12 md:col-6">
             <label className="font-bold block mb-2">Type of Information</label>
-            <InputText 
-                value={form.typeOfInformation} 
-                onChange={e => setForm({ ...form, typeOfInformation: e.target.value })} 
-                className="w-full" 
-                placeholder="e.g. Technical / Field"
+            <InputText
+              value={form.typeOfInformation}
+              onChange={e => setForm({ ...form, typeOfInformation: e.target.value })}
+              className="w-full"
+              placeholder="e.g. Technical / Field"
             />
-        </div>
+          </div>
 
-        {/* Row 3: IO Name and Misc Work */}
-        <div className="field col-12 md:col-6">
+          {/* Row 3: IO Name and Misc Work */}
+          <div className="field col-12 md:col-6">
             <label className="font-bold block mb-2">Name of IO</label>
-            <InputText 
-                value={form.nameOfIO} 
-                onChange={e => setForm({ ...form, nameOfIO: e.target.value })} 
-                className="w-full" 
-                placeholder="Investigating Officer"
+            <InputText
+              value={form.nameOfIO}
+              onChange={e => setForm({ ...form, nameOfIO: e.target.value })}
+              className="w-full"
+              placeholder="Investigating Officer"
             />
-        </div>
-        <div className="field col-12 md:col-6">
+          </div>
+          <div className="field col-12 md:col-6">
             <label className="font-bold block mb-2">Misc Work</label>
-            <InputText 
-                value={form.miscellaneousWork} 
-                onChange={e => setForm({ ...form, miscellaneousWork: e.target.value })} 
-                className="w-full" 
-                placeholder="Comma separated tasks"
+            <InputText
+              value={form.miscellaneousWork}
+              onChange={e => setForm({ ...form, miscellaneousWork: e.target.value })}
+              className="w-full"
+              placeholder="Comma separated tasks"
             />
-        </div>
+          </div>
 
-        {/* Full Width: MultiSelect Tools */}
-        <div className="field col-12">
+          {/* Full Width: MultiSelect Tools */}
+          <div className="field col-12">
             <label className="font-bold block mb-2">Forensic Tools Used</label>
             <MultiSelect
-                value={form.toolsUsed} 
-                options={tools} 
-                display="chip" 
-                filter
-                onChange={e => setForm({ ...form, toolsUsed: e.value })}
-                className="w-full custom-multiselect" 
-                placeholder="Select forensic tools"
-                panelFooterTemplate={() => (
-                    <div className="flex p-2 gap-2 bg-gray-50 border-top-1 border-200">
-                        <InputText 
-                            value={newToolName} 
-                            onChange={e => setNewToolName(e.target.value)} 
-                            placeholder="Add missing tool..." 
-                            className="p-inputtext-sm flex-1" 
-                        />
-                        <Button 
-                            icon="pi pi-plus" 
-                            onClick={() => { if(newToolName) { setTools([...tools, newToolName]); setNewToolName(''); }}} 
-                            className="p-button-sm teal-btn" 
-                        />
-                    </div>
-                )}
+              value={form.toolsUsed}
+              options={tools}
+              display="chip"
+              filter
+              onChange={e => setForm({ ...form, toolsUsed: e.value })}
+              className="w-full custom-multiselect"
+              placeholder="Select forensic tools"
+              panelFooterTemplate={() => (
+                <div className="flex p-2 gap-2 bg-gray-50 border-top-1 border-200">
+                  <InputText
+                    value={newToolName}
+                    onChange={e => setNewToolName(e.target.value)}
+                    placeholder="Add missing tool..."
+                    className="p-inputtext-sm flex-1"
+                  />
+                  <Button
+                    icon="pi pi-plus"
+                    onClick={() => { if (newToolName) { setTools([...tools, newToolName]); setNewToolName(''); } }}
+                    className="p-button-sm teal-btn"
+                  />
+                </div>
+              )}
             />
-        </div>
+          </div>
 
-        {/* Full Width: Remarks */}
-        <div className="field col-12">
+          {/* Full Width: Remarks */}
+          <div className="field col-12">
             <label className="font-bold block mb-2">Additional Remarks</label>
-            <InputText 
-                value={form.remarks} 
-                onChange={e => setForm({ ...form, remarks: e.target.value })} 
-                className="w-full" 
-                placeholder="Observations or notes"
+            <InputText
+              value={form.remarks}
+              onChange={e => setForm({ ...form, remarks: e.target.value })}
+              className="w-full"
+              placeholder="Observations or notes"
             />
-        </div>
+          </div>
 
-        {/* Action Button */}
-        <div className="col-12 mt-3">
-            <Button 
-                label={editingId ? 'Update Activity Record' : 'Create Activity Record'} 
-                icon={editingId ? "pi pi-refresh" : "pi pi-check"}
-                className="teal-btn w-full py-3 text-lg font-bold shadow-2" 
-                onClick={saveActivity} 
+          {/* Action Button */}
+          <div className="col-12 mt-3">
+            <Button
+              label={editingId ? 'Update Activity Record' : 'Create Activity Record'}
+              icon={editingId ? "pi pi-refresh" : "pi pi-check"}
+              className="teal-btn w-full py-3 text-lg font-bold shadow-2"
+              onClick={saveActivity}
             />
+          </div>
         </div>
-    </div>
-</Dialog>
+      </Dialog>
     </div>
   );
 }

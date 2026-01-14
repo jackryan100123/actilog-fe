@@ -287,16 +287,19 @@ const AdminUsers = ({ user }) => {
 
                 <Column
                     header="Status"
+                    headerClassName="justify-content-center" 
                     body={(rowData) => {
                         const isActive = (rowData.status || 'ACTIVE').toUpperCase() === 'ACTIVE';
                         return (
-                            <Button
-                                label={isActive ? 'Active' : 'Inactive'}
-                                disabled={!canModifyUser(rowData)}
-                                className={`p-button-sm status-btn ${isActive ? 'p-button-success' : 'p-button-danger'}`}
-                                onClick={() => handleStatusToggle(rowData)}
-                                style={{ width: '90px' }}
-                            />
+                            <div className="flex justify-content-center w-full">
+                                <Button
+                                    label={isActive ? 'Active' : 'Inactive'}
+                                    disabled={!canModifyUser(rowData)}
+                                    className={`p-button-sm status-btn ${isActive ? 'p-button-success' : 'p-button-danger'}`}
+                                    onClick={() => handleStatusToggle(rowData)}
+                                    style={{ width: '90px' }}
+                                />
+                            </div>
                         );
                     }}
                 />

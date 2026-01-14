@@ -21,6 +21,7 @@ const Dashboard = () => {
     const [totalRecords, setTotalRecords] = useState(0);
     const [lazyParams, setLazyParams] = useState({ first: 0, rows: 10, page: 0 });
 
+    const today = new Date();
 
     const [stats, setStats] = useState({
         totalActivities: 0, pendingTasks: 0, inProgressTasks: 0, completedTasks: 0,
@@ -350,9 +351,16 @@ const Dashboard = () => {
                             }}
                             selectionMode={filterType === 'WEEKLY' ? 'range' : 'single'}
                             dateTemplate={dateTemplate}
-                            // Highlights: Dynamic view and format
+
+                            // Dynamic View
                             view={filterType === 'MONTHLY' ? 'month' : filterType === 'YEARLY' ? 'year' : 'date'}
                             dateFormat={filterType === 'MONTHLY' ? 'mm/yy' : filterType === 'YEARLY' ? 'yy' : 'dd/mm/yy'}
+
+                            // Force restriction for ALL views
+                            maxDate={today}
+
+                            // Prevents the picker from showing future navigation arrows
+                            yearRange={`2000:${today.getFullYear()}`}
 
                             className="w-14rem"
                             showIcon
