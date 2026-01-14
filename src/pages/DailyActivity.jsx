@@ -258,7 +258,7 @@ export default function DailyActivity() {
             <Column field="activityDate" header="Date" body={r => new Date(r.activityDate).toLocaleDateString()} sortable />
 
             {(user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN') && (
-              <Column field="user.name" header="Logged By" filter sortable />
+              <Column field="user" header="Logged By" filter sortable />
             )}
 
             <Column field="detailOfCase" header="Detail of Case" filter sortable />
