@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { clearTokens } from '../api/api';
 import '../styles/header.css';
-import logo from '../assets/logo.png';
+import logo from '/logo.png';
 
 const Header = ({ user, showProfile = true }) => {
     const navigate = useNavigate();
