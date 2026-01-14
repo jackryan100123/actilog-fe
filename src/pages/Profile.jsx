@@ -29,7 +29,8 @@ const Profile = () => {
                     icon: 'error',
                     title: 'Error',
                     text: msg || 'Failed to load profile',
-                    confirmButtonColor: '#0d9488'
+                    confirmButtonColor: '#0d9488',
+                    iconColor: '#0d9488'
                 });
             }
         } finally {
@@ -48,7 +49,8 @@ const Profile = () => {
             Swal.fire({
                 icon: 'success',
                 title: 'Password Updated',
-                confirmButtonColor: '#0d9488'
+                confirmButtonColor: '#0d9488',
+                iconColor: '#0d9488'
             });
             setPassForm({ oldPassword: '', newPassword: '', confirm: '' });
         } catch (err) {
@@ -60,6 +62,7 @@ const Profile = () => {
                     icon: 'error',
                     title: 'Update Failed',
                     text: msg || 'Current password may be incorrect',
+                    iconColor: '#0d9488',
                     confirmButtonColor: '#0d9488'
                 });
             }
