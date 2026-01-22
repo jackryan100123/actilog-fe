@@ -1,6 +1,5 @@
 import Swal from 'sweetalert2';
 
-// const API_BASE_URL = 'http://localhost:8080';
 const hostname = window.location.hostname; 
 export const API_BASE_URL = `http://${hostname}:8080`;
 
@@ -29,19 +28,26 @@ export async function fetchWithAuth(url, options = {}, auth = true) {
     }
   }
 
+  const isFormData = options.body instanceof FormData;
+  const finalHeaders = { ...headers };
+  
+  if (!isFormData && !finalHeaders['Content-Type']) {
+      finalHeaders['Content-Type'] = 'application/json';
+  }
+  
+  if (isFormData) {
+      delete finalHeaders['Content-Type'];
+  }
+
   let response = await fetch(API_BASE_URL + url, {
     ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers,
-    },
+    headers: finalHeaders,
     credentials: 'include',
   });
-  
-  if (response.status === 400 ) {
-    const res= await response.json();
-    console.log(res.errors);
-    
+
+  // 1. Handle Critical Errors First (400)
+  if (response.status === 400) {
+    const res = await response.json();
     const errorHtml = `
       <div style="text-align: left; font-family: sans-serif;">
         <p style="font-weight: bold; color: #374151; margin-bottom: 10px;">The following fields are required:</p>
@@ -64,12 +70,10 @@ export async function fetchWithAuth(url, options = {}, auth = true) {
       confirmButtonText: 'Correct Details',
     });
 
-    const error = new Error("Validation Failed");
-    error.data = data;
-    throw error;
+    throw new Error("Validation Failed");
   }
 
-  // 1. Handle 401 (Token Expired) - Try to Refresh
+  // 2. Handle Token Refresh (401)
   if (response.status === 401 && auth) {
     const refreshResponse = await fetch(API_BASE_URL + '/auth/refresh', {
       method: 'POST',
@@ -85,14 +89,20 @@ export async function fetchWithAuth(url, options = {}, auth = true) {
     return;
   }
 
-  // 2. Parse JSON once so we can use it for both errors and success
+  // 3. SPECIAL HANDLING FOR DOWNLOADS
+  // We return the blob immediately to prevent it from being parsed as text/JSON
+  if (response.ok && url.includes('/download')) {
+    return await response.blob();
+  }
+
+  // 4. Parse JSON for standard API calls
   const contentType = response.headers.get('content-type') || '';
   let data = null;
   if (contentType.includes('application/json')) {
     data = await response.json();
   }
 
-  // 4. Handle 403 / Other Errors
+  // 5. Handle Access Denied (403) or other failures
   if (!response.ok) {
     if (response.status === 403) {
       await Swal.fire({
@@ -107,18 +117,16 @@ export async function fetchWithAuth(url, options = {}, auth = true) {
     throw new Error(data?.message || `Request failed: ${response.status}`);
   }
 
-  // 5. Return success data
   return data || await response.text();
 }
 
-// Helper to clean up
 function handleSessionExpiry() {
   localStorage.removeItem('accessToken');
   if (window.location.pathname !== '/login') {
     window.location.href = '/login?expired=true';
   }
 }
-// --- AUTH ---
+
 export async function login(username, password) {
   return fetchWithAuth('/auth/login', {
     method: 'POST',
@@ -128,17 +136,15 @@ export async function login(username, password) {
 
 export const logoutUser = async () => {
     try {
-        await api.post('/auth/logout');
+        await fetchWithAuth('/auth/logout', { method: 'POST' });
     } catch (err) {
         console.error("Logout error", err);
     } finally {
         localStorage.removeItem('accessToken');
-        delete api.defaults.headers.common['Authorization'];
         window.location.href = '/login';
     }
 };
 
-// --- USER (SELF) ---
 export async function getProfile() {
   return fetchWithAuth('/user/me');
 }
@@ -149,8 +155,6 @@ export async function changePassword(oldPassword, newPassword) {
     body: JSON.stringify({ oldPassword, newPassword }),
   });
 }
-
-// --- ADMIN: USER MANAGEMENT ---
 
 export async function getAllUsers() {
   return fetchWithAuth('/admin/users');
@@ -180,16 +184,12 @@ export async function deleteUser(userId) {
   });
 }
 
-/** * Change user status (ACTIVE/INACTIVE) 
- * @param {string} status - Enum value
- */
 export async function updateUserStatus(userId, status) {
   return fetchWithAuth(`/admin/users/${userId}/status?status=${status}`, {
     method: 'PUT',
   });
 }
 
-/** Admin can reset anyone's password */
 export async function adminChangeUserPassword(userId, newPassword) {
   return fetchWithAuth(`/admin/users/${userId}/password`, {
     method: 'PUT',
@@ -197,31 +197,21 @@ export async function adminChangeUserPassword(userId, newPassword) {
   });
 }
 
-// --- SUPER ADMIN ---
-
-/** * Only accessible by Super Admin to change user roles
- * @param {string} role - SUPER_ADMIN, ADMIN, MANAGER, ANALYST, USER
- */
 export async function assignUserRole(userId, role) {
   return fetchWithAuth(`/super-admin/users/${userId}/role?role=${role}`, {
     method: 'PUT',
   });
 }
 
-// --- DAILY ACTIVITIES ---
-
 export async function getMyActivities(lazyParams) {
     const { page, rows, sortField, sortOrder, filters } = lazyParams;
-
     let params = new URLSearchParams();
     params.append('page', page);
     params.append('size', rows);
-
     if (sortField) {
         const direction = sortOrder === 1 ? 'asc' : 'desc';
         params.append('sort', `${sortField},${direction}`);
     }
-
     if (filters) {
         Object.keys(filters).forEach((key) => {
             const filterValue = filters[key].value;
@@ -230,7 +220,6 @@ export async function getMyActivities(lazyParams) {
             }
         });
     }
-
     return fetchWithAuth(`/daily-activities?${params.toString()}`);
 }
 
@@ -271,6 +260,44 @@ export async function getDashboardLogs(filters, page = 0, size = 10) {
   const d = date instanceof Date ? date.toISOString().split('T')[0] : date;
   let url = `/admin/analytics/logs?filterType=${filterType}&date=${d}&page=${page}&size=${size}`;
   if (userId) url += `&userId=${userId}`;
-  
   return fetchWithAuth(url);
 }
+
+// --- NOTICES METHODS ---
+export const getNotices = () => fetchWithAuth('/notices');
+
+export const uploadNotice = (title, type, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return fetchWithAuth(`/notices/upload?title=${encodeURIComponent(title)}&type=${encodeURIComponent(type)}`, {
+        method: 'POST',
+        body: formData
+    });
+};
+
+export const updateNotice = (id, title, type, file) => {
+    const formData = new FormData();
+    if (file) formData.append('file', file);
+    return fetchWithAuth(`/notices/${id}?title=${encodeURIComponent(title)}&type=${encodeURIComponent(type)}`, {
+        method: 'PUT',
+        body: formData
+    });
+};
+
+export const downloadNotice = (id) => fetchWithAuth(`/notices/${id}/download`);
+export const deleteNotice = (id) => fetchWithAuth(`/notices/${id}`, { method: 'DELETE' });
+
+// --- MANUALS METHODS ---
+export const listManuals = () => fetchWithAuth('/manuals');
+
+export const uploadManual = (title, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return fetchWithAuth(`/manuals/upload?title=${encodeURIComponent(title)}`, {
+        method: 'POST',
+        body: formData
+    });
+};
+
+export const downloadManual = (id) => fetchWithAuth(`/manuals/${id}/download`);
+export const removeManual = (id) => fetchWithAuth(`/manuals/${id}`, { method: 'DELETE' });

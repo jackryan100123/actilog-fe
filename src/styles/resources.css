@@ -1,0 +1,33 @@
+/* resources.css */
+
+.resource-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.table-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.bg-faded {
+    background-color: #f8fafc;
+}
+
+.teal-text { color: #0d9488 !important; }
+.orange-text { color: #f59e0b !important; }
+.border-200 { border-color: #e2e8f0 !important; }
+
+.custom-teal-table .p-datatable-tbody > tr > td {
+    text-align: left !important;
+    padding: 0.85rem 1.25rem !important;
+}
+
+.disabled-icon {
+    pointer-events: none; 
+}

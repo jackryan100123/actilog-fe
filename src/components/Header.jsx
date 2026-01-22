@@ -13,7 +13,6 @@ const Header = ({ user, showProfile = true }) => {
     const location = useLocation();
     const menu = useRef(null);
 
-    // Hide header on login page
     if (location.pathname === '/login') return null;
 
     const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
@@ -32,7 +31,6 @@ const Header = ({ user, showProfile = true }) => {
         navigate('/login', { replace: true });
     };
 
-    // Main Navigation Links
     const navItems = [
         ...(isAdmin ? [{
             label: 'Dashboard',
@@ -44,14 +42,18 @@ const Header = ({ user, showProfile = true }) => {
             icon: 'pi pi-calendar-plus',
             command: () => navigate('/daily-activities')
         },
+        {
+            label: 'Resources',
+            icon: 'pi pi-folder-open',
+            command: () => navigate('/resources')
+        },
         ...(isAdmin ? [{
             label: 'User Management',
             icon: 'pi pi-users',
-            command: () => navigate('/admin/users')
+            command: () => navigate('/users')
         }] : [])
     ];
 
-    // Avatar Dropdown Links
     const profileItems = [
         { label: 'My Profile', icon: 'pi pi-user', command: () => navigate('/profile') },
         { separator: true },
@@ -63,6 +65,7 @@ const Header = ({ user, showProfile = true }) => {
             src={logo}
             alt="Logo"
             className="logo-img mr-4"
+            style={{ cursor: 'pointer' }}
             onClick={() => navigate(isAdmin ? '/dashboard' : '/daily-activities')}
         />
     );
@@ -71,12 +74,12 @@ const Header = ({ user, showProfile = true }) => {
         <div className="flex align-items-center gap-3">
             <div className="text-right hidden sm:block mr-2">
                 <p className="text-900 font-bold m-0 line-height-1">{user?.name}</p>
-                {/* <small className="text-600 font-medium capitalize">{user?.role}</small> */}
             </div>
             <Avatar
                 label={user?.name?.[0].toUpperCase() || 'U'}
                 shape="circle"
                 className="avatar"
+                style={{ cursor: 'pointer' }}
                 onClick={(e) => menu.current.toggle(e)}
             />
             <TieredMenu model={profileItems} popup ref={menu} />

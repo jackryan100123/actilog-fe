@@ -15,8 +15,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
 import DailyActivity from './pages/DailyActivity';
 import Profile from './pages/Profile.jsx';
+import Resources from './pages/Resources.jsx';
 import Login from './pages/Login';
-import AdminUsers from './pages/AdminUsers';
+import UserManagement from './pages/UserManagement.jsx';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -73,22 +74,24 @@ function App() {
             } />
 
             {/* Admin Specific Route */}
-            <Route path="/admin/users" element={
+            <Route path="/users" element={
               <ProtectedRoute requiredRoles={['ADMIN', 'SUPER_ADMIN']}>
                 <Header user={user} />
                 <main className="flex-grow-1">
-                  <AdminUsers user={user} />
+                  <UserManagement user={user} />
                 </main>
                 <Footer />
               </ProtectedRoute>
             } />
 
             {/* Standard Protected Routes */}
-            {['/dashboard', '/daily-activities', '/profile'].map((path) => {
-              const Component = 
-                path === '/dashboard' ? Dashboard : 
-                path === '/daily-activities' ? DailyActivity : Profile;
-              
+            {['/dashboard', '/daily-activities', '/profile','/resources'].map((path) => {
+              // Corrected Conditional Logic
+              let Component;
+              if (path === '/dashboard') Component = Dashboard;
+              else if (path === '/daily-activities') Component = DailyActivity;
+              else if (path === '/resources') Component = Resources;
+              else Component = Profile;
               return (
                 <Route key={path} path={path} element={
                   <ProtectedRoute>

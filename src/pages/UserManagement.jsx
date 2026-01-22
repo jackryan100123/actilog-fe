@@ -10,6 +10,7 @@ import { Password } from 'primereact/password';
 import { FilterMatchMode } from 'primereact/api';
 import Swal from 'sweetalert2';
 import { Tag } from 'primereact/tag';
+import '../styles/usermanagement.css';
 
 import {
     getAllUsers,
@@ -19,7 +20,7 @@ import {
     deleteUser
 } from '../api/api';
 
-const AdminUsers = ({ user }) => {
+const UserManagement = ({ user }) => {
     // --- Existing State ---
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -171,7 +172,7 @@ const AdminUsers = ({ user }) => {
         <div className="daily-page">
             <div className="daily-container">
                 <Toast ref={toast} />
-                
+
                 <div className="page-header">
                     <div className="title-area">
                         <h1>User Management</h1>
@@ -180,15 +181,15 @@ const AdminUsers = ({ user }) => {
                     <div className="flex align-items-center gap-3">
                         <span className="p-input-icon-left">
                             <i className="pi pi-search" />
-                            <InputText 
-                                value={globalFilterValue} 
+                            <InputText
+                                value={globalFilterValue}
                                 onChange={(e) => {
                                     const value = e.target.value;
                                     setGlobalFilterValue(value);
                                     setFilters({ global: { value, matchMode: FilterMatchMode.CONTAINS } });
-                                }} 
-                                placeholder="Search users..." 
-                                className="p-inputtext-sm" 
+                                }}
+                                placeholder="Search users..."
+                                className="p-inputtext-sm"
                             />
                         </span>
                         {(user.role === 'ADMIN' || user.role === 'SUPER_ADMIN') && (
@@ -234,13 +235,16 @@ const AdminUsers = ({ user }) => {
                             headerClassName="justify-content-center"
                             body={(rowData) => {
                                 const isActive = (rowData.status || 'ACTIVE').toUpperCase() === 'ACTIVE';
+                                const canModify = canModifyUser(rowData); // Check permissions
+
                                 return (
                                     <div className="flex justify-content-center w-full">
-                                        <Tag 
-                                            value={isActive ? 'Active' : 'Inactive'} 
-                                            severity={isActive ? 'success' : 'danger'} 
-                                            className="status-tag cursor-pointer"
-                                            onClick={() => canModifyUser(rowData) && handleStatusToggle(rowData)}
+                                        <Tag
+                                            value={isActive ? 'Active' : 'Inactive'}
+                                            severity={isActive ? 'success' : 'danger'}
+                                            // Remove cursor-pointer if disabled, add disabled-tag
+                                            className={`status-tag ${canModify ? 'cursor-pointer' : 'disabled-tag'}`}
+                                            onClick={() => canModify && handleStatusToggle(rowData)}
                                         />
                                     </div>
                                 );
@@ -332,4 +336,4 @@ const AdminUsers = ({ user }) => {
     );
 };
 
-export default AdminUsers;
+export default UserManagement;
